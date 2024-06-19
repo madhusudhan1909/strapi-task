@@ -1,4 +1,4 @@
-name: Deploy to EC2
+  name: Deploy to EC2
 
 on:
   push:
@@ -27,8 +27,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          yarn install
-          yarn install --immutable || { echo "Installation with --immutable failed, retrying without..." && yarn install; }
+          yarn install --frozen-lockfile || { echo "Installation with --frozen-lockfile failed, retrying with --check-files..." && yarn install --check-files; }
 
       - name: Build Strapi (if necessary)
         run: yarn build
@@ -42,5 +41,5 @@ jobs:
           script: |
             cd /home/ubuntu/strapi/examples/getstarted  # Navigate to your Strapi project directory
             git pull origin main                      # Pull latest changes from your repository
-            yarn install --immutable                  # Install dependencies (if any changes)
+            yarn install --frozen-lockfile            # Install dependencies (enforcing lockfile consistency)
             pm2 restart strapi                        # Restart Strapi using PM2
