@@ -17,7 +17,9 @@ jobs:
         run: npm install -g yarn
 
       - name: Install dependencies
-        run: yarn install
+        run: |
+          yarn cache clean
+          yarn install --frozen-lockfile  # Ensures the lockfile is not modified
 
       - name: Build Strapi (if necessary)
         run: yarn build
