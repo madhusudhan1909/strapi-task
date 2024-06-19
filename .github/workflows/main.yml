@@ -27,14 +27,14 @@ jobs:
       #   run: yarn install
 
       # Transfer files to EC2 instance using SCP
-      - name: Transfer files to EC2 instance
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_PRIVATE_KEY }}
-          source: './'  # Adjust path to your Strapi project directory
-          target: '/home/ubuntu/strapi/examples/getstarted'  # Adjust remote path as needed
+      # - name: Transfer files to EC2 instance
+      #   uses: appleboy/scp-action@master
+      #   with:
+      #     host: ${{ secrets.EC2_HOST }}
+      #     username: ${{ secrets.EC2_USERNAME }}
+      #     key: ${{ secrets.EC2_PRIVATE_KEY }}
+      #     source: './'  # Adjust path to your Strapi project directory
+      #     target: '/home/ubuntu/strapi/examples/getstarted'  # Adjust remote path as needed
 
       # SSH into EC2 instance and execute deployment commands
       - name: SSH into EC2 instance and deploy
