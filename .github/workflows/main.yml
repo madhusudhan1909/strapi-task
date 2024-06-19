@@ -22,7 +22,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             echo "Attempting SSH connection..."
-            cd /home/ubuntu/strapi  # Adjust path to your Strapi project
+            cd /home/ubuntu/strapi/strapi-task  # Adjust path to your Strapi project
             echo "Changed directory to Strapi project."
             yarn install
             echo "Installed dependencies."
