@@ -19,6 +19,12 @@ jobs:
       - name: Clear Yarn cache
         run: yarn cache clean
 
+      - name: Update dependencies
+        run: |
+          npm install -g npm-check-updates
+          ncu -u
+          rm yarn.lock
+
       - name: Install dependencies
         run: yarn install --immutable
 
