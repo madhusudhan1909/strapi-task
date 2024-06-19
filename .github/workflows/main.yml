@@ -20,7 +20,43 @@ jobs:
     #     cache: yarn
 
     - name: Navigate to Strapi Project Directory
-      run: cd /home/ubuntu/strapi
+      run: cd /home/ubuntu/strapiname: Deploy Strapi to EC2
+
+on:
+  push:
+    branches:
+      - main  # adjust branch name as needed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install Node.js and Yarn
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'  # adjust Node.js version as needed
+        cache: yarn
+
+    - name: Navigate to Strapi Project Directory
+      run: cd /home/ubuntu/strapi/examples/getstarted
+    - name: Install dependencies
+      run: yarn install
+
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_PRIVATE_KEY }}
+        script: |
+          cd /home/ubuntu/strapi/examples/getstarted
+          yarn install
+          yarn develop &
+          sleep 10  # Wait for Strapi to start up
     - name: Install dependencies
       run: yarn install
 
