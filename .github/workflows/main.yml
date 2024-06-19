@@ -1,34 +1,52 @@
-name: Deploy and Start Strapi
+name: Deploy Strapi API to EC2
 
 on:
   push:
     branches:
-      - main
+      - main  # Adjust branch name as needed
+  workflow_dispatch:  # Allows manual triggering of the workflow
 
 jobs:
-  deploy-and-start:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Setup SSH key
-        uses: webfactory/ssh-agent@v0.5.3
+      # Install Node.js and Yarn
+      - name: Install Node.js and Yarn
+        uses: actions/setup-node@v2
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          node-version: '16'
 
-      - name: SSH into EC2 instance and start Strapi develop
+      # Install dependencies using Yarn
+      - name: Install dependencies
+        run: yarn install
+
+      # Start Strapi development server (if needed)
+      # - name: Start Strapi development server
+      #   run: yarn develop &
+
+      # Transfer files to EC2 instance using SCP
+      - name: Transfer files to EC2 instance
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          source: './'  # Adjust path to your Strapi project directory
+          target: '/home/ubuntu/strapi/examples/getstarted'  # Adjust remote path as needed
+
+      # SSH into EC2 instance and execute deployment commands
+      - name: SSH into EC2 instance and deploy
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
-          port: ${{ secrets.EC2_SSH_PORT }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
-            echo "Attempting SSH connection..."
             cd /home/ubuntu/strapi/examples/getstarted
-            echo "Changed directory to getstarted directory."
             yarn install
-            echo "Installed dependencies."
-            yarn develop
-            echo "Started Strapi develop."
+            yarn develop &
+            sleep 10  # Wait for the server to start
