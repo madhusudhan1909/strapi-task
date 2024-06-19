@@ -31,5 +31,5 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /home/ubuntu/strapi
+            cd /home/ubuntu/strapi/examples/getstarted
             yarn develop
