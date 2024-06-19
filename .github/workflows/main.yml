@@ -1,4 +1,4 @@
-name: Deploy Strapi and Start Develop
+name: Start Strapi Develop
 
 on:
   push:
@@ -9,11 +9,11 @@ on:
       - main
 
 jobs:
-  deploy-and-start:
+  start-develop:
     runs-on: ubuntu-latest
 
     steps:
-      - name: SSH into EC2 instance and deploy Strapi
+      - name: SSH into EC2 instance and start Strapi develop
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -22,13 +22,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             echo "Attempting SSH connection..."
-            cd /home/ubuntu/strapi/examples  # Adjust path to your examples directory
-            echo "Changed directory to examples directory."
-            cd strapi
-            echo "Changed directory to strapi directory."
-            yarn install
-            echo "Installed dependencies for Strapi."
-            cd ../getstarted
+            cd /home/ubuntu/strapi/examples/getstarted  # Adjust path to your Strapi project's getstarted directory
             echo "Changed directory to getstarted directory."
             yarn develop
-            echo "Started Strapi development server in getstarted directory."
+            echo "Started Strapi develop."
