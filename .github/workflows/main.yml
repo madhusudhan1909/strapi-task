@@ -1,28 +1,34 @@
-name: Start Strapi Develop
+name: Deploy and Start Strapi
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  start-develop:
+  deploy-and-start:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup SSH key
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
       - name: SSH into EC2 instance and start Strapi develop
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           port: ${{ secrets.EC2_SSH_PORT }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             echo "Attempting SSH connection..."
-            cd /home/ubuntu/strapi/examples/getstarted  # Adjust path to your Strapi project's getstarted directory
+            cd /home/ubuntu/strapi/examples/getstarted
             echo "Changed directory to getstarted directory."
+            yarn install
+            echo "Installed dependencies."
             yarn develop
             echo "Started Strapi develop."
