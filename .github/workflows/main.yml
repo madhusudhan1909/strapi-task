@@ -18,9 +18,15 @@ jobs:
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.EC2_SSH_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /home/ubuntu/strapi
+            echo "Attempting SSH connection..."
+            cd /home/ubuntu/strapi  # Adjust path to your Strapi project
+            echo "Changed directory to Strapi project."
             yarn install
+            echo "Installed dependencies."
             yarn develop
+            echo "Started Strapi develop."
+
+      # Add more steps or debugging commands as needed
