@@ -20,7 +20,7 @@ jobs:
     #     cache: yarn
 
     - name: Navigate to Strapi Project Directory
-      run: cd /home/ubuntu/strapi/examples/getstarted
+      run: cd /home/ubuntu/strapi
     - name: Install dependencies
       run: yarn install
 
