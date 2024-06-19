@@ -1,4 +1,4 @@
-  name: Deploy to EC2
+name: Deploy Strapi to EC2
 
 on:
   push:
@@ -13,32 +13,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install Yarn
-        run: npm install -g yarn
-
-      - name: Clear Yarn cache
-        run: yarn cache clean
-
-      - name: Update dependencies
-        run: |
-          npm install -g npm-check-updates
-          ncu -u
-          rm yarn.lock
-
-      - name: Install dependencies
-        run: |
-          yarn install 
-      - name: Build Strapi (if necessary)
-        run: yarn build
-
-      - name: Deploy to EC2
-        uses: appleboy/ssh-action@master
+      - name: Install SSH key
+        uses: webfactory/ssh-agent@v0.5.3
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd /home/ubuntu/strapi/examples/getstarted  # Navigate to your Strapi project directory
-            git pull origin main                      # Pull latest changes from your repository
-            yarn install --frozen-lockfile            # Install dependencies (enforcing lockfile consistency)
-            pm2 restart strapi                        # Restart Strapi using PM2
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: SSH into EC2 instance and deploy
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@13.127.147.131 << 'EOF'
+            git pull origin main
+            cd /home/ubuntu/strapi/examples/getstarted
+            yarn install --frozen-lockfile
+            yarn build
+            pm2 stop all
+            pm2 start ecosystem.config.js
+          EOF
