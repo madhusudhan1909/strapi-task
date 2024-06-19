@@ -12610,6 +12610,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"better-sqlite3@npm:11.0.0":
+  version: 11.0.0
+  resolution: "better-sqlite3@npm:11.0.0"
+  dependencies:
+    bindings: "npm:^1.5.0"
+    node-gyp: "npm:latest"
+    prebuild-install: "npm:^7.1.1"
+  checksum: 2fe3743ff5744cac0b76a7d4eb0b1318f576bdaf643ab994f4ae257082063c5649a878e3748e55ca2ae1b457afb327ca123d5961d0f6e4b53a165a91c024d1b3
+  languageName: node
+  linkType: hard
+
 "better-sqlite3@npm:8.6.0":
   version: 8.6.0
   resolution: "better-sqlite3@npm:8.6.0"
@@ -18148,7 +18159,7 @@ __metadata:
     "@strapi/provider-upload-aws-s3": "npm:4.25.0"
     "@strapi/provider-upload-cloudinary": "npm:4.25.0"
     "@strapi/strapi": "npm:4.25.0"
-    better-sqlite3: "npm:8.6.0"
+    better-sqlite3: "npm:11.0.0"
     lodash: "npm:4.17.21"
     mysql: "npm:2.18.1"
     mysql2: "npm:3.9.4"
