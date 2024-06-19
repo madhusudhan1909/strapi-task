@@ -21,8 +21,8 @@ jobs:
       # - name: Install dependencies
       #   run: yarn install
 
-      - name: Build
-        run: yarn build
+      # - name: Build
+      #   run: yarn build
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
