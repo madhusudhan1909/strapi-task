@@ -16,10 +16,11 @@ jobs:
       - name: Install Yarn
         run: npm install -g yarn
 
+      - name: Clear Yarn cache
+        run: yarn cache clean
+
       - name: Install dependencies
-        run: |
-          yarn cache clean
-          yarn install --frozen-lockfile  # Ensures the lockfile is not modified
+        run: yarn install --immutable
 
       - name: Build Strapi (if necessary)
         run: yarn build
@@ -33,5 +34,5 @@ jobs:
           script: |
             cd /home/ubuntu/strapi/examples/getstarted  # Navigate to your Strapi project directory
             git pull origin main                      # Pull latest changes from your repository
-            yarn install                              # Install dependencies (if any changes)
+            yarn install --immutable                  # Install dependencies (if any changes)
             pm2 restart strapi                        # Restart Strapi using PM2
