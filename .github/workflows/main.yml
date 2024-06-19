@@ -27,8 +27,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          yarn install --frozen-lockfile || { echo "Installation with --frozen-lockfile failed, retrying with --check-files..." && yarn install --check-files; }
-
+          yarn install 
       - name: Build Strapi (if necessary)
         run: yarn build
 
